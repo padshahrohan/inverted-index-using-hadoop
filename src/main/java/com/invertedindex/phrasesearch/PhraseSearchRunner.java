@@ -43,7 +43,7 @@ public class PhraseSearchRunner extends Configured implements Tool {
         conf.set("operator", args[args.length-1]);
 
         Job job = Job.getInstance(conf, "Phrase Search Word");
-        job.setJarByClass(PhaseSearchReducer.class);
+        job.setJarByClass(PhraseSearchRunner.class);
 
         job.setMapOutputKeyClass(IntWritable.class);
         job.setMapOutputValueClass(Text.class);
