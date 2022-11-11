@@ -17,19 +17,19 @@ public class InvertedIndexMapper extends Mapper<LongWritable, Text, Text, Text> 
 
     @Override
     protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
-        String fileName = ((FileSplit) context.getInputSplit()).getPath().getName();
+        String path = ((FileSplit) context.getInputSplit()).getPath().toString();
         LOGGER.info("Map called");
         System.out.println("Map called");
-        LOGGER.info("File name " + fileName);
-        System.out.println("File name " + fileName);
+        LOGGER.info("File name " + path);
+        System.out.println("File name " + path);
         StringTokenizer itr = new StringTokenizer(value.toString());
 
         HashSet<String> words = new HashSet<String>();
         while (itr.hasMoreTokens()) {
             String word = itr.nextToken();
             if (!words.contains(word)) {
-                WordMetaData wordMetaData = new WordMetaData(new Text(fileName), new Text(String.valueOf(lineNumber)));
-                context.write(new Text(word), new Text(wordMetaData.toString()));
+                String record = path + "_" +  lineNumber;
+                context.write(new Text(word), new Text(record));
                 words.add(word);
             }
         }

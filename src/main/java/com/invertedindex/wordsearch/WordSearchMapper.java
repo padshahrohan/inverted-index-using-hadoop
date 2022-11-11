@@ -1,5 +1,6 @@
 package com.invertedindex.wordsearch;
 
+import com.invertedindex.JobOutputBuilder;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -19,8 +20,10 @@ public class WordSearchMapper extends Mapper<LongWritable, Text, Text, Text> {
         String occurrencesInFile = split[1];
 
         if (word.equalsIgnoreCase(query)) {
-            context.write(new Text(word), new Text(occurrencesInFile));
+            JobOutputBuilder jobOutputBuilder = new JobOutputBuilder(context.getConfiguration());
+            context.write(new Text(word), new Text(jobOutputBuilder.buildOutput(occurrencesInFile.split(","))));
         }
     }
+
 
 }
