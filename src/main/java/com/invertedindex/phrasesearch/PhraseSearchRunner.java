@@ -33,7 +33,7 @@ public class PhraseSearchRunner extends Configured implements Tool {
     public int run(String[] args) throws Exception {
         BasicConfigurator.configure();
         Configuration conf = new Configuration();
-        ArrayList<String> list = new ArrayList<String>(Arrays.asList(args).subList(2, args.length - 1));
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(args).subList(2, args.length - 1));
         System.out.println("List of words" + list);
         LOGGER.info("List of words " + list);
         String[] words = new String[list.size()];

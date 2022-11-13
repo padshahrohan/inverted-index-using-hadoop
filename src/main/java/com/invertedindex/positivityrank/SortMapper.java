@@ -19,7 +19,7 @@ public class SortMapper extends Mapper<LongWritable, Text, IntWritable, Text> {
         String fileName = split[0];
         String numberOfPositiveWords = split[1];
 
-        context.write(new IntWritable(1), new Text(fileName + "_" + numberOfPositiveWords));
+        context.write(new IntWritable(1), new Text(fileName + ":=:" + numberOfPositiveWords));
     }
 
 }

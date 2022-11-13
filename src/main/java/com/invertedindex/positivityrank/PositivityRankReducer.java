@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 public class PositivityRankReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
-    final static Logger LOGGER = Logger.getLogger(PhaseSearchReducer.class);
 
     @Override
     protected void reduce(Text key, Iterable<IntWritable> values, Reducer<Text, IntWritable, Text, IntWritable>.Context context) throws IOException, InterruptedException {
@@ -25,7 +24,6 @@ public class PositivityRankReducer extends Reducer<Text, IntWritable, Text, IntW
             sum = sum + value.get();
         }
         result.set(sum);
-        LOGGER.info("sum" + sum);
         System.out.println("sum" + sum);
         context.write(new Text(key), result);
     }

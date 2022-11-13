@@ -20,15 +20,14 @@ public class PositivityRankMapper extends Mapper<LongWritable, Text, Text, IntWr
 
         String[] split = value.toString().split("\\t");
         String word = split[0];
-        String occurrencesInFile = split[1];
 
         if (positiveWords.contains(word)) {
-            String[] fileAndLineNumbers = occurrencesInFile.split(",");
+            String[] occurrences = split[1].split(",");
 
-            for (String fileAndLineNumber : fileAndLineNumbers) {
+            for (String wordMetadata : occurrences) {
                 System.out.println("Word " + word);
-                System.out.println("File and line number " + fileAndLineNumber);
-                String fileName = fileAndLineNumber.split("_")[0] + "}";
+                System.out.println("File and line number " + wordMetadata);
+                String fileName = wordMetadata.split(":=:")[0];
                 context.write(new Text(fileName), new IntWritable(1));
             }
         }
