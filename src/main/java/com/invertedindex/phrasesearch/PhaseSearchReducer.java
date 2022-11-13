@@ -36,12 +36,12 @@ public class PhaseSearchReducer extends Reducer<IntWritable, Text, Text, Text> {
                     }).collect(Collectors.toSet());
 
             if (OR.equalsIgnoreCase(operator)) {
-                phraseSearchOutput = Sets.union(phraseSearchOutput, fileNameAndLineNumbers);
+                phraseSearchOutput.addAll(fileNameAndLineNumbers);
             } else {
                 if (phraseSearchOutput.isEmpty()) {
-                    phraseSearchOutput = Sets.union(phraseSearchOutput, fileNameAndLineNumbers);
+                    phraseSearchOutput.addAll(fileNameAndLineNumbers);
                 } else {
-                    phraseSearchOutput = Sets.intersection(phraseSearchOutput, fileNameAndLineNumbers);
+                    phraseSearchOutput = phraseSearchOutput.stream().filter(fileNameAndLineNumbers::contains).collect(Collectors.toSet());
                 }
             }
         }
@@ -52,11 +52,10 @@ public class PhaseSearchReducer extends Reducer<IntWritable, Text, Text, Text> {
     protected void cleanup(Reducer<IntWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
         Set<String> answer = new HashSet<>();
         for (String fileNameAndLineNumber : phraseSearchOutput) {
-            Set<String> wordOffsets = fileNameAndLineNumberToWordOffset.get(fileNameAndLineNumber);
-            Set<String> wordMetadata = wordOffsets.stream().map(offset -> fileNameAndLineNumber + ":=:" + offset).collect(Collectors.toSet());
-            answer.addAll(wordMetadata);
+            String offsets = String.join(", " , fileNameAndLineNumberToWordOffset.get(fileNameAndLineNumber));
+            answer.add(fileNameAndLineNumber + ":=:" + offsets);
         }
         JobOutputBuilder jobOutputBuilder = new JobOutputBuilder(context.getConfiguration());
-        context.write(new Text("Output"), new Text(jobOutputBuilder.buildOutput(answer)));
+        context.write(new Text(), new Text(jobOutputBuilder.buildOutput(answer)));
     }
 }

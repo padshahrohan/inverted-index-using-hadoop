@@ -22,7 +22,7 @@ public class JobOutputBuilder {
     }
 
     public String buildOutput(String[] occurrences) throws IOException {
-        StringJoiner joiner = new StringJoiner(",");
+        StringJoiner joiner = new StringJoiner("\n");
         for (String occurrence : occurrences) {
             String finalOutput = findLine(occurrence, configuration);
             joiner.add(finalOutput);
@@ -31,7 +31,7 @@ public class JobOutputBuilder {
     }
 
     public String buildOutput(Set<String> fileNameAndLineNumbers) throws IOException {
-        StringJoiner joiner = new StringJoiner(",");
+        StringJoiner joiner = new StringJoiner("\n");
         for (String fileNameAndLineNumber : fileNameAndLineNumbers) {
             String finalOutput = findLine(fileNameAndLineNumber, configuration);
             joiner.add(finalOutput);

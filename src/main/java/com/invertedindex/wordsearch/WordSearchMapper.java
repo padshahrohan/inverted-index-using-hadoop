@@ -21,7 +21,7 @@ public class WordSearchMapper extends Mapper<LongWritable, Text, Text, Text> {
         if (word.equalsIgnoreCase(query)) {
             String occurrence = split[1];
             JobOutputBuilder jobOutputBuilder = new JobOutputBuilder(context.getConfiguration());
-            context.write(new Text(word), new Text(jobOutputBuilder.buildOutput(occurrence.split(","))));
+            context.write(new Text(), new Text(jobOutputBuilder.buildOutput(occurrence.split(","))));
         }
     }
 
