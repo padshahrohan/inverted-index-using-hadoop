@@ -18,11 +18,10 @@ public class InvertedIndexMapper extends Mapper<LongWritable, Text, Text, Text> 
         String path = ((FileSplit) context.getInputSplit()).getPath().toString();
         StringTokenizer itr = new StringTokenizer(value.toString());
 
-        HashSet<String> words = new HashSet<>();
         long wordOffset = 1;
         while (itr.hasMoreTokens()) {
             String word = itr.nextToken();
-            if (word.length() > 1 && word.matches("^[A-Za-z]+$") && !words.add(word)) {
+            if (word.length() > 1 && word.matches("^[A-Za-z]+$")) {
                 String occurrence = path + ":=:" +  lineNumber + ":=:" + wordOffset;
                 context.write(new Text(word), new Text(occurrence));
             }
