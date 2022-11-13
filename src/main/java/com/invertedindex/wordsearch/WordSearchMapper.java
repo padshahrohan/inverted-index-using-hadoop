@@ -17,11 +17,11 @@ public class WordSearchMapper extends Mapper<LongWritable, Text, Text, Text> {
         String[] split = value.toString().split("\\t");
 
         String word = split[0];
-        String occurrencesInFile = split[1];
 
         if (word.equalsIgnoreCase(query)) {
+            String occurrence = split[1];
             JobOutputBuilder jobOutputBuilder = new JobOutputBuilder(context.getConfiguration());
-            context.write(new Text(word), new Text(jobOutputBuilder.buildOutput(occurrencesInFile.split(","))));
+            context.write(new Text(word), new Text(jobOutputBuilder.buildOutput(occurrence.split(","))));
         }
     }
 

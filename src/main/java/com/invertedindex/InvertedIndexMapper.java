@@ -6,11 +6,9 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
 public class InvertedIndexMapper extends Mapper<LongWritable, Text, Text, Text> {
-
     long lineNumber = 1;
 
     @Override
@@ -23,7 +21,7 @@ public class InvertedIndexMapper extends Mapper<LongWritable, Text, Text, Text> 
             String word = itr.nextToken();
             if (word.length() > 1 && word.matches("^[A-Za-z]+$")) {
                 String occurrence = path + ":=:" +  lineNumber + ":=:" + wordOffset;
-                context.write(new Text(word), new Text(occurrence));
+                context.write(new Text(word.toLowerCase()), new Text(occurrence));
             }
             wordOffset++;
         }
