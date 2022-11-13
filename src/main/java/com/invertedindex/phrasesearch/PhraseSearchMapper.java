@@ -23,7 +23,7 @@ public class PhraseSearchMapper extends Mapper<LongWritable, Text, IntWritable, 
         String word = split[0];
 
         if (words.contains(word)) {
-            System.out.println("Words " + words);
+            System.out.println("split " + split[1]);
             String occurrences = split[1];
             context.write(new IntWritable(1), new Text(occurrences));
         }

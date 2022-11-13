@@ -38,7 +38,7 @@ public class PositivityRankRunner extends Configured implements Tool {
         BasicConfigurator.configure();
         Configuration conf = new Configuration();
 
-        Path positiveWordsFilePath = new Path("/positive-words/positive-words-sample.csv");
+        Path positiveWordsFilePath = new Path("/positive-words/positive-words.csv");
         FileSystem fileSystem = positiveWordsFilePath.getFileSystem(conf);
         FSDataInputStream inputStream = fileSystem.open(positiveWordsFilePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 public class JobOutputBuilder {
 
     private final Configuration configuration;
+    private static final String HDFS_INPUT_DIR_PREFIX = "/invertedindex/input/";
 
     public JobOutputBuilder(Configuration configuration) {
         this.configuration = configuration;
@@ -40,7 +41,7 @@ public class JobOutputBuilder {
 
     private String findLine(String occurrence, Configuration configuration) throws IOException {
         String[] occurrenceMetadata = occurrence.split(":=:");
-        Path path = new Path(occurrenceMetadata[0]);
+        Path path = new Path(HDFS_INPUT_DIR_PREFIX + occurrenceMetadata[0]);
         FileSystem fileSystem = FileSystem.get(configuration);
 
         try (Stream<String> lines = new BufferedReader(new InputStreamReader(fileSystem.open(path))).lines()) {

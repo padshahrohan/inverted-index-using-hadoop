@@ -23,11 +23,11 @@ public class PhaseSearchReducer extends Reducer<IntWritable, Text, Text, Text> {
         System.out.println("Operator" + operator);
 
         for (Text value : values) {
-            System.out.println("value" + value.toString());
             String[] occurrences = value.toString().split(",");
             Set<String> fileNameAndLineNumbers = Arrays.stream(occurrences)
                     .map(occurrence -> {
-                        String[] wordMetadata = occurrence.split(",");
+                        System.out.println("occurrence" + occurrence);
+                        String[] wordMetadata = occurrence.split(":=:");
                         String fileNameAndLineNumber = wordMetadata[0] + ":=:" + wordMetadata[1];
                         Set<String> wordOffsets = fileNameAndLineNumberToWordOffset.getOrDefault(fileNameAndLineNumber, new HashSet<>());
                         wordOffsets.add(wordMetadata[2]);
@@ -39,7 +39,7 @@ public class PhaseSearchReducer extends Reducer<IntWritable, Text, Text, Text> {
                 phraseSearchOutput = Sets.union(phraseSearchOutput, fileNameAndLineNumbers);
             } else {
                 if (phraseSearchOutput.isEmpty()) {
-                    phraseSearchOutput.addAll(fileNameAndLineNumbers);
+                    phraseSearchOutput = Sets.union(phraseSearchOutput, fileNameAndLineNumbers);
                 } else {
                     phraseSearchOutput = Sets.intersection(phraseSearchOutput, fileNameAndLineNumbers);
                 }

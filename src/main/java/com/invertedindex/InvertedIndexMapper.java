@@ -13,14 +13,14 @@ public class InvertedIndexMapper extends Mapper<LongWritable, Text, Text, Text> 
 
     @Override
     protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
-        String path = ((FileSplit) context.getInputSplit()).getPath().toString();
+        String fileName = ((FileSplit) context.getInputSplit()).getPath().getName();
         StringTokenizer itr = new StringTokenizer(value.toString());
 
         long wordOffset = 1;
         while (itr.hasMoreTokens()) {
-            String word = itr.nextToken();
+            String word = itr.nextToken().trim();
             if (word.length() > 1 && word.matches("^[A-Za-z]+$")) {
-                String occurrence = path + ":=:" +  lineNumber + ":=:" + wordOffset;
+                String occurrence = fileName + ":=:" +  lineNumber + ":=:" + wordOffset;
                 context.write(new Text(word.toLowerCase()), new Text(occurrence));
             }
             wordOffset++;
